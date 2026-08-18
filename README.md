@@ -710,7 +710,11 @@ Software Engineer
 Some recommendations may be based on direct skills, while others may use related skill relationships.
 
 ---
+# Demo Video
 
+A short walkthrough demonstrating the SkillGraph application, job recommendations, and graph-based skill matching.
+
+[▶ Watch the SkillGraph Demo Video](https://drive.google.com/file/d/1CHsr1CVvHHj-ytpre47DdEnwA3rjB151/view?usp=sharing)
 # Screenshots
 
 ## Candidate Selection
