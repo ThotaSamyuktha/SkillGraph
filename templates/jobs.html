@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Job Recommendations | SkillGraph</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- Navigation -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Skill<span>Graph</span>
+        </div>
+
+        <a
+            href="/"
+            class="back-link"
+        >
+            ← Change Candidate
+        </a>
+
+    </nav>
+
+
+    <!-- Main Content -->
+
+    <main class="jobs-container">
+
+        {% if error %}
+
+            <div class="error-message">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        {% if candidate %}
+
+            <!-- Candidate Header -->
+
+            <section class="candidate-header">
+
+                <div>
+
+                    <div class="badge">
+                        Job Recommendations
+                    </div>
+
+                    <h1>
+                        Hello, {{ candidate.name }} 👋
+                    </h1>
+
+                    <p>
+                        Here are jobs connected to your skills
+                        through the SkillGraph.
+                    </p>
+
+                </div>
+
+
+                <div class="candidate-location">
+
+                    📍 {{ candidate.location }}
+
+                </div>
+
+            </section>
+
+
+            <!-- Skills -->
+
+            <section class="skills-section">
+
+                <h2>Your Skills</h2>
+
+                <div class="skills-list">
+
+                    {% for skill in skills %}
+
+                        <span class="skill-chip">
+                            {{ skill.name }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+
+            <!-- Recommendations -->
+
+            <section class="jobs-section">
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>
+                            Recommended Jobs
+                        </h2>
+
+                        <p>
+                            {{ jobs|length }}
+                            opportunities found
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {% if jobs %}
+
+                    <div class="jobs-grid">
+
+                        {% for job in jobs %}
+
+                            <article class="job-card">
+
+
+                                <!-- Job Header -->
+
+                                <div class="job-top">
+
+                                    <div>
+
+                                        <h3>
+                                            {{ job.title }}
+                                        </h3>
+
+                                        <p class="company">
+                                            {{ job.company }}
+                                        </p>
+
+                                    </div>
+
+
+                                    <!-- Recommendation Type -->
+                                    <div class="recommendation-badge">
+
+    {% if job.match_type == "Direct + Related" %}
+
+        <span class="match-badge direct-match">
+            ✓ Direct + Related
+        </span>
+
+    {% elif job.match_type == "Related Skill" %}
+
+        <span class="match-badge related-match">
+            ↗ Related Skill
+        </span>
+
+    {% else %}
+
+        <span class="match-badge direct-match">
+            ✓ Direct Skill
+        </span>
+
+    {% endif %}
+
+</div>
+
+                                </div>
+
+
+                                <!-- Recommendation Explanation -->
+                            
+                                {% if job.match_type == "Direct + Related" %}
+
+    <p class="recommendation-reason">
+        Recommended through a direct skill match and a related skill connection.
+    </p>
+
+{% elif job.match_type == "Related Skill" %}
+
+    <p class="recommendation-reason">
+        Recommended through a related skill in your profile.
+    </p>
+
+{% else %}
+
+    <p class="recommendation-reason">
+        Recommended because your skills match this job.
+    </p>
+
+{% endif %}
+
+                                <!-- Job Details -->
+
+                                <div class="job-details">
+
+                                    <span>
+                                        📍 {{ job.location }}
+                                    </span>
+
+                                    <span>
+                                        💼 {{ job.experience }}
+                                    </span>
+
+                                    <span>
+                                        💰 {{ job.salary }}
+                                    </span>
+
+                                </div>
+
+
+                                <!-- Job Category -->
+
+                                <div class="job-category">
+
+                                    {{ job.category }}
+
+                                </div>
+
+
+                                <!-- Footer -->
+
+                                <div class="job-footer">
+
+                                    <a
+                                        href="/job/{{ job.id }}?candidate_id={{ candidate.id }}"
+                                        class="details-button"
+                                    >
+                                        View Details →
+                                    </a>
+
+                                </div>
+
+
+                            </article>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                {% else %}
+
+                    <!-- Empty State -->
+
+                    <div class="empty-state large">
+
+                        <div class="empty-icon">
+                            🔍
+                        </div>
+
+                        <h3>
+                            No matching jobs found
+                        </h3>
+
+                        <p>
+                            We couldn't find jobs connected to this
+                            candidate's current skills.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+
+        {% else %}
+
+            <!-- Candidate Not Found -->
+
+            <div class="empty-state large">
+
+                <h3>
+                    Candidate not found
+                </h3>
+
+                <p>
+                    Please return to the home page and select a
+                    valid candidate.
+                </p>
+
+                <a
+                    href="/"
+                    class="primary-button small-button"
+                >
+                    Go Home
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </main>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <p>
+            SkillGraph &copy; 2026
+        </p>
+
+        <p>
+            Powered by Flask + CognoDB
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

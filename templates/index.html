@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkillGraph | Job Recommendation</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+
+        <div class="logo">
+            Skill<span>Graph</span>
+        </div>
+
+        <div class="nav-text">
+            Graph-Based Job Recommendations
+        </div>
+
+    </nav>
+
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <div class="badge">
+                    Powered by CognoDB
+                </div>
+
+                <h1>
+                    Find Jobs That Match
+                    <span>Your Skills</span>
+                </h1>
+
+                <p class="hero-description">
+                    SkillGraph uses graph relationships between candidates,
+                    skills, jobs, companies, and related technologies to
+                    discover relevant career opportunities.
+                </p>
+
+            </div>
+
+
+            <!-- Candidate Selection Card -->
+            <div class="recommendation-card">
+
+                <h2>Start Your Job Search</h2>
+
+                <p class="card-description">
+                    Select a candidate profile to discover matching jobs.
+                </p>
+
+
+                {% if error %}
+
+                    <div class="error-message">
+                        {{ error }}
+                    </div>
+
+                {% endif %}
+
+
+                {% if candidates %}
+
+                    <form action="/jobs" method="GET">
+
+                        <label for="candidate_id">
+                            Select Candidate
+                        </label>
+
+                        <select
+                            id="candidate_id"
+                            name="candidate_id"
+                            required
+                        >
+
+                            <option value="">
+                                Choose a candidate...
+                            </option>
+
+                            {% for candidate in candidates %}
+
+                                <option value="{{ candidate.id }}">
+
+                                    {{ candidate.name }}
+                                    — {{ candidate.location }}
+
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+
+                        <button
+                            type="submit"
+                            class="primary-button"
+                        >
+                            Find Matching Jobs
+                        </button>
+
+                    </form>
+
+                {% else %}
+
+                    <div class="empty-state">
+
+                        <h3>No candidates available</h3>
+
+                        <p>
+                            Candidate data could not be loaded from CognoDB.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <!-- How It Works -->
+        <section class="how-section">
+
+            <h2>How SkillGraph Works</h2>
+
+            <div class="feature-grid">
+
+                <div class="feature-card">
+
+                    <div class="feature-number">
+                        01
+                    </div>
+
+                    <h3>Candidate Skills</h3>
+
+                    <p>
+                        Your profile is connected to the skills you already
+                        know.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-number">
+                        02
+                    </div>
+
+                    <h3>Skill Relationships</h3>
+
+                    <p>
+                        Related technologies create additional paths through
+                        the knowledge graph.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-number">
+                        03
+                    </div>
+
+                    <h3>Job Discovery</h3>
+
+                    <p>
+                        Graph traversal connects your skills to jobs and
+                        companies looking for those skills.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <p>
+            SkillGraph &copy; 2026
+        </p>
+
+        <p>
+            Built with Flask + CognoDB
+        </p>
+
+    </footer>
+
+</body>
+</html>

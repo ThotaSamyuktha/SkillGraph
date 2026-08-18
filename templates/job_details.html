@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ job.title }} | SkillGraph</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Skill<span>Graph</span>
+        </div>
+
+        <a
+            href="/jobs?candidate_id={{ candidate.id }}"
+            class="back-link"
+        >
+            ← Back to Recommendations
+        </a>
+
+    </nav>
+
+
+    <!-- Main Content -->
+
+    <main class="details-container">
+
+        {% if error %}
+
+            <div class="error-message">
+                {{ error }}
+            </div>
+
+        {% endif %}
+
+
+        {% if job %}
+
+            <!-- Job Header -->
+
+            <section class="job-detail-header">
+
+                <div>
+
+                    <div class="badge">
+                        {{ job.category }}
+                    </div>
+
+                    <h1>
+                        {{ job.title }}
+                    </h1>
+
+                    <p class="detail-company">
+                        {{ job.company }}
+                    </p>
+
+                </div>
+
+
+                <div class="match-score">
+
+    <span class="match-number">
+        {{ match_percentage }}%
+    </span>
+
+    <span class="match-label">
+        Skill Match
+    </span>
+
+    <span class="match-type-label">
+        {{ match_label }}
+    </span>
+
+</div>
+
+            </section>
+
+
+            <!-- Job Information -->
+
+            <section class="detail-info-grid">
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Location
+                    </span>
+
+                    <strong>
+                        {{ job.location }}
+                    </strong>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Experience
+                    </span>
+
+                    <strong>
+                        {{ job.experience }}
+                    </strong>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Salary
+                    </span>
+
+                    <strong>
+                        {{ job.salary }}
+                    </strong>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span class="info-label">
+                        Company
+                    </span>
+
+                    <strong>
+                        {{ job.company }}
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <!-- Skills Analysis -->
+            <section class="skills-analysis">
+
+    <h2>Skills Analysis</h2>
+
+    <p class="analysis-description">
+        SkillGraph compares the candidate's skills with
+        the skills required by this job.
+    </p>
+
+
+    <!-- Direct Matches -->
+    <div class="analysis-section">
+
+        <h3>✓ Direct Matches</h3>
+
+        {% if matched_skills %}
+
+            <div class="analysis-skills">
+
+                {% for skill in matched_skills %}
+
+                    <span class="matched-skill">
+                        {{ skill }}
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p class="no-skills">
+                No directly matched skills.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- Related Matches -->
+    <div class="analysis-section">
+
+        <h3>↗ Related Matches</h3>
+
+        {% if related_skills %}
+
+            <div class="analysis-skills">
+
+                {% for skill in related_skills %}
+
+                    <span class="related-skill">
+                        {{ skill }}
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+            <p class="skill-help-text">
+                These skills are related to skills already in your profile.
+            </p>
+
+        {% else %}
+
+            <p class="no-skills">
+                No related skill matches.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- Missing Skills -->
+    <div class="analysis-section">
+
+        <h3>+ Skills to Learn</h3>
+
+        {% if missing_skills %}
+
+            <div class="analysis-skills">
+
+                {% for skill in missing_skills %}
+
+                    <span class="missing-skill">
+                        {{ skill }}
+                    </span>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p class="success-message">
+                Excellent! You have all required skills.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</section>
+
+
+            <!-- Graph Explanation -->
+
+            <section class="graph-explanation">
+
+                <h2>
+                    Why This Job Was Recommended
+                </h2>
+
+                <div class="graph-flow">
+
+                    <div class="graph-node">
+                        {{ candidate.name }}
+                    </div>
+
+                    <div class="graph-arrow">
+                        →
+                    </div>
+
+                    <div class="graph-node">
+                        Your Skills
+                    </div>
+
+                    <div class="graph-arrow">
+                        →
+                    </div>
+
+                    <div class="graph-node">
+                        Required Skills
+                    </div>
+
+                    <div class="graph-arrow">
+                        →
+                    </div>
+
+                    <div class="graph-node highlight-node">
+                        {{ job.title }}
+                    </div>
+
+                </div>
+
+                <p>
+                    SkillGraph uses graph relationships to connect
+                    candidates with relevant job opportunities.
+                </p>
+
+            </section>
+
+        {% else %}
+
+            <div class="empty-state large">
+
+                <h3>
+                    Job not found
+                </h3>
+
+                <p>
+                    The requested job could not be found.
+                </p>
+
+                <a
+                    href="/"
+                    class="primary-button small-button"
+                >
+                    Go Home
+                </a>
+
+            </div>
+
+        {% endif %}
+
+    </main>
+
+
+    <!-- Footer -->
+
+    <footer>
+
+        <p>
+            SkillGraph &copy; 2026
+        </p>
+
+        <p>
+            Powered by Flask + CognoDB
+        </p>
+
+    </footer>
+
+</body>
+
+</html>
